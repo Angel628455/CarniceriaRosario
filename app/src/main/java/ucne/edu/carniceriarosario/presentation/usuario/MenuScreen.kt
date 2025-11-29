@@ -30,7 +30,7 @@ fun MenuScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Menú Principal",
+                        "Carnicería Rosarios",
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -59,7 +59,7 @@ fun MenuScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Bienvenido al Sistema",
+                text = "Sistema de Gestión",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -71,6 +71,7 @@ fun MenuScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
+                // Gestión de Usuarios
                 item {
                     MenuCard(
                         title = "Usuarios",
@@ -78,26 +79,76 @@ fun MenuScreen(
                         onClick = { onMenuItemClick("usuarios") }
                     )
                 }
-                // Puedes agregar más items del menú aquí
+
+                // Gestión de Productos
                 item {
                     MenuCard(
-                        title = "Configuración",
-                        icon = Icons.Default.Settings,
-                        onClick = { /* TODO */ }
+                        title = "Productos",
+                        icon = Icons.Default.ShoppingCart,
+                        onClick = { onMenuItemClick("productos") }
                     )
                 }
+
+                // Gestión de Categorías
                 item {
                     MenuCard(
-                        title = "Reportes",
-                        icon = Icons.Default.Info,
-                        onClick = { /* TODO */ }
+                        title = "Categorías",
+                        icon = Icons.Default.Send,
+                        onClick = { onMenuItemClick("categorias") }
                     )
                 }
+
+                // Gestión de Clientes
                 item {
                     MenuCard(
-                        title = "Ayuda",
-                        icon = Icons.Default.MoreVert,
-                        onClick = { /* TODO */ }
+                        title = "Clientes",
+                        icon = Icons.Default.Face,
+                        onClick = { onMenuItemClick("clientes") }
+                    )
+                }
+
+                // Gestión de Carritos
+                item {
+                    MenuCard(
+                        title = "Carritos",
+                        icon = Icons.Default.ShoppingCart,
+                        onClick = { onMenuItemClick("carritos") }
+                    )
+                }
+
+                // Gestión de Pedidos
+                item {
+                    MenuCard(
+                        title = "Pedidos",
+                        icon = Icons.Default.Home,
+                        onClick = { onMenuItemClick("pedidos") }
+                    )
+                }
+
+                // Gestión de Pagos
+                item {
+                    MenuCard(
+                        title = "Pagos",
+                        icon = Icons.Default.ArrowDropDown,
+                        onClick = { onMenuItemClick("pagos") }
+                    )
+                }
+
+                // Gestión de Estados
+                item {
+                    MenuCard(
+                        title = "Estados",
+                        icon = Icons.Default.AccountCircle,
+                        onClick = { onMenuItemClick("estados") }
+                    )
+                }
+
+                // Gestión de Métodos de Pago
+                item {
+                    MenuCard(
+                        title = "Métodos Pago",
+                        icon = Icons.Default.Favorite,
+                        onClick = { onMenuItemClick("metodosPago") }
                     )
                 }
             }
