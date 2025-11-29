@@ -1,4 +1,4 @@
-package ucne.edu.carniceriarosario.presentation.carrito
+package ucne.edu.carniceriarosario.presentation.pedido
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -6,29 +6,43 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
-import ucne.edu.carniceriarosario.data.remote.dto.CarritoDeComprasDto
+
+// Tus DTOs
+import ucne.edu.carniceriarosario.data.remote.dto.PedidosDto
+import ucne.edu.carniceriarosario.data.remote.dto.EstadosDto
+
+// Tu ViewModel
+import ucne.edu.carniceriarosario.presentation.pedido.PedidosViewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarritoListScreen(
-    viewModel: CarritoDeComprasViewModel = hiltViewModel(),
+fun PedidosListScreen(
+    viewModel: PedidosViewModel = hiltViewModel(),
     onNavigateToCreate: () -> Unit,
     onNavigateToEdit: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var showDeleteDialog by remember { mutableStateOf<CarritoDeComprasDto?>(null) }
+    var showDeleteDialog by remember { mutableStateOf<PedidosDto?>(null) }
 
     LaunchedEffect(uiState.successMessage, uiState.errorMessage) {
         uiState.successMessage?.let {
@@ -44,7 +58,7 @@ fun CarritoListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Carritos de Compras") },
+                title = { Text("Pedidos") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
@@ -58,7 +72,7 @@ fun CarritoListScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar carrito",
+                    contentDescription = "Agregar pedido",
                     tint = Color.White
                 )
             }
@@ -76,7 +90,7 @@ fun CarritoListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                placeholder = { Text("Buscar por cliente o ID...") },
+                placeholder = { Text("Buscar por cliente, ID o estado...") },
                 leadingIcon = {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null)
                 },
@@ -92,17 +106,17 @@ fun CarritoListScreen(
             )
 
             // Mensajes
-            uiState.successMessage?.let { SuccessMessageCarrito(it) }
-            uiState.errorMessage?.let { ErrorMessageCarrito(it) }
+            uiState.successMessage?.let { SuccessMessagePedido(it) }
+            uiState.errorMessage?.let { ErrorMessagePedido(it) }
 
-            // Lista de carritos
+            // Lista de pedidos
             when {
-                uiState.isLoadingCarritos -> {
+                uiState.isLoadingPedidos -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
-                uiState.errorCarritos != null -> {
+                uiState.errorPedidos != null -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,32 +129,32 @@ fun CarritoListScreen(
                                 modifier = Modifier.size(48.dp)
                             )
                             Text(
-                                text = uiState.errorCarritos ?: "Error desconocido",
+                                text = uiState.errorPedidos ?: "Error desconocido",
                                 color = MaterialTheme.colorScheme.error
                             )
-                            Button(onClick = { viewModel.loadCarritos() }) {
+                            Button(onClick = { viewModel.loadPedidos() }) {
                                 Text("Reintentar")
                             }
                         }
                     }
                 }
-                uiState.carritosFiltrados.isEmpty() -> {
+                uiState.pedidosFiltrados.isEmpty() -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.ShoppingCart,
+                                imageVector = Icons.Default.MoreVert,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(64.dp)
                             )
                             Text(
                                 text = if (uiState.searchQuery.isBlank())
-                                    "No hay carritos registrados"
+                                    "No hay pedidos registrados"
                                 else
-                                    "No se encontraron carritos",
+                                    "No se encontraron pedidos",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
@@ -153,13 +167,13 @@ fun CarritoListScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         items(
-                            items = uiState.carritosFiltrados,
-                            key = { it.carritoId }
-                        ) { carrito ->
-                            CarritoItem(
-                                carrito = carrito,
-                                onEdit = { onNavigateToEdit(carrito.carritoId) },
-                                onDelete = { showDeleteDialog = carrito }
+                            items = uiState.pedidosFiltrados,
+                            key = { it.pedidoId }
+                        ) { pedido ->
+                            PedidoItem(
+                                pedido = pedido,
+                                onEdit = { onNavigateToEdit(pedido.pedidoId) },
+                                onDelete = { showDeleteDialog = pedido }
                             )
                         }
                     }
@@ -168,7 +182,7 @@ fun CarritoListScreen(
         }
     }
 
-    showDeleteDialog?.let { carrito ->
+    showDeleteDialog?.let { pedido ->
         AlertDialog(
             onDismissRequest = { showDeleteDialog = null },
             icon = {
@@ -178,14 +192,14 @@ fun CarritoListScreen(
                     tint = MaterialTheme.colorScheme.error
                 )
             },
-            title = { Text("Eliminar carrito") },
+            title = { Text("Eliminar pedido") },
             text = {
-                Text("¿Está seguro que desea eliminar el carrito del cliente '${carrito.clienteId}'?")
+                Text("¿Está seguro que desea eliminar el pedido #${pedido.pedidoId} del cliente '${pedido.clienteId}'?")
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        viewModel.deleteCarrito(carrito.carritoId)
+                        viewModel.deletePedido(pedido.pedidoId)
                         showDeleteDialog = null
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -205,8 +219,8 @@ fun CarritoListScreen(
 }
 
 @Composable
-fun CarritoItem(
-    carrito: CarritoDeComprasDto,
+fun PedidoItem(
+    pedido: PedidosDto,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -239,12 +253,12 @@ fun CarritoItem(
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Carrito #${carrito.carritoId}",
+                            text = "Pedido #${pedido.pedidoId}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Cliente: ${carrito.clienteId}",
+                            text = "Cliente: ${pedido.clienteId ?: "N/A"}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -271,7 +285,7 @@ fun CarritoItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Información adicional del carrito
+            // Información adicional del pedido
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -283,7 +297,7 @@ fun CarritoItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "$${carrito.montoTotal}",
+                        text = "$${pedido.montoTotal}",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -296,7 +310,7 @@ fun CarritoItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = carrito.productos.size.toString(),
+                        text = pedido.productosOrdenados.size.toString(),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -309,11 +323,40 @@ fun CarritoItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = if (carrito.compra) "Comprado" else "Pendiente",
+                        text = pedido.estados?.nombre ?: "N/A",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
-                        color = if (carrito.compra) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            // Fechas
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = "Entrega:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = pedido.entrega,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
+                Column {
+                    Text(
+                        text = "Recibido:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = pedido.recibido,
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
             }
@@ -322,7 +365,7 @@ fun CarritoItem(
 }
 
 @Composable
-fun SuccessMessageCarrito(message: String) {
+fun SuccessMessagePedido(message: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -350,7 +393,7 @@ fun SuccessMessageCarrito(message: String) {
 }
 
 @Composable
-fun ErrorMessageCarrito(message: String) {
+fun ErrorMessagePedido(message: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -379,15 +422,18 @@ fun ErrorMessageCarrito(message: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun CarritoItemPreview() {
+fun PedidoItemPreview() {
     MaterialTheme {
-        CarritoItem(
-            carrito = CarritoDeComprasDto(
-                carritoId = 1,
+        PedidoItem(
+            pedido = PedidosDto(
+                pedidoId = 1,
                 clienteId = "CLI-001",
-                productos = listOf(),
+                productosOrdenados = listOf(),
+                entrega = "2024-01-15",
+                recibido = "2024-01-10",
                 montoTotal = 150.75f,
-                compra = false
+                estadoId = 1,
+                estados = ucne.edu.carniceriarosario.data.remote.dto.EstadosDto(1, "Pendiente")
             ),
             onEdit = {},
             onDelete = {}

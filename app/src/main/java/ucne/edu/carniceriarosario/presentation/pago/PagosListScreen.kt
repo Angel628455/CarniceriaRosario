@@ -1,4 +1,4 @@
-package ucne.edu.carniceriarosario.presentation.carrito
+package ucne.edu.carniceriarosario.presentation.pago
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,22 +13,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.delay
-import ucne.edu.carniceriarosario.data.remote.dto.CarritoDeComprasDto
+
+// Tus DTOs
+import ucne.edu.carniceriarosario.data.remote.dto.PagosDto
+import ucne.edu.carniceriarosario.data.remote.dto.DetallesPagosDto
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarritoListScreen(
-    viewModel: CarritoDeComprasViewModel = hiltViewModel(),
+fun PagosListScreen(
+    viewModel: PagosViewModel = hiltViewModel(),
     onNavigateToCreate: () -> Unit,
     onNavigateToEdit: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var showDeleteDialog by remember { mutableStateOf<CarritoDeComprasDto?>(null) }
+    var showDeleteDialog by remember { mutableStateOf<PagosDto?>(null) }
 
     LaunchedEffect(uiState.successMessage, uiState.errorMessage) {
         uiState.successMessage?.let {
@@ -44,7 +46,7 @@ fun CarritoListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Carritos de Compras") },
+                title = { Text("Pagos y Detalles") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = Color.White
@@ -58,7 +60,7 @@ fun CarritoListScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar carrito",
+                    contentDescription = "Agregar pago",
                     tint = Color.White
                 )
             }
@@ -76,7 +78,7 @@ fun CarritoListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                placeholder = { Text("Buscar por cliente o ID...") },
+                placeholder = { Text("Buscar por cliente, ID o monto...") },
                 leadingIcon = {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null)
                 },
@@ -92,17 +94,17 @@ fun CarritoListScreen(
             )
 
             // Mensajes
-            uiState.successMessage?.let { SuccessMessageCarrito(it) }
-            uiState.errorMessage?.let { ErrorMessageCarrito(it) }
+            uiState.successMessage?.let { SuccessMessagePago(it) }
+            uiState.errorMessage?.let { ErrorMessagePago(it) }
 
-            // Lista de carritos
+            // Lista de pagos
             when {
-                uiState.isLoadingCarritos -> {
+                uiState.isLoadingPagos -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
-                uiState.errorCarritos != null -> {
+                uiState.errorPagos != null -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,32 +117,32 @@ fun CarritoListScreen(
                                 modifier = Modifier.size(48.dp)
                             )
                             Text(
-                                text = uiState.errorCarritos ?: "Error desconocido",
+                                text = uiState.errorPagos ?: "Error desconocido",
                                 color = MaterialTheme.colorScheme.error
                             )
-                            Button(onClick = { viewModel.loadCarritos() }) {
+                            Button(onClick = { viewModel.loadPagos() }) {
                                 Text("Reintentar")
                             }
                         }
                     }
                 }
-                uiState.carritosFiltrados.isEmpty() -> {
+                uiState.pagosFiltrados.isEmpty() -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.ShoppingCart,
+                                imageVector = Icons.Default.Send,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(64.dp)
                             )
                             Text(
                                 text = if (uiState.searchQuery.isBlank())
-                                    "No hay carritos registrados"
+                                    "No hay pagos registrados"
                                 else
-                                    "No se encontraron carritos",
+                                    "No se encontraron pagos",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
@@ -153,13 +155,14 @@ fun CarritoListScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         items(
-                            items = uiState.carritosFiltrados,
-                            key = { it.carritoId }
-                        ) { carrito ->
-                            CarritoItem(
-                                carrito = carrito,
-                                onEdit = { onNavigateToEdit(carrito.carritoId) },
-                                onDelete = { showDeleteDialog = carrito }
+                            items = uiState.pagosFiltrados,
+                            key = { it.pagoId }
+                        ) { pago ->
+                            PagoConDetallesItem(
+                                pago = pago,
+                                detalles = uiState.detallesPagos.filter { it.pagoId == pago.pagoId },
+                                onEdit = { onNavigateToEdit(pago.pagoId) },
+                                onDelete = { showDeleteDialog = pago }
                             )
                         }
                     }
@@ -168,7 +171,7 @@ fun CarritoListScreen(
         }
     }
 
-    showDeleteDialog?.let { carrito ->
+    showDeleteDialog?.let { pago ->
         AlertDialog(
             onDismissRequest = { showDeleteDialog = null },
             icon = {
@@ -178,14 +181,14 @@ fun CarritoListScreen(
                     tint = MaterialTheme.colorScheme.error
                 )
             },
-            title = { Text("Eliminar carrito") },
+            title = { Text("Eliminar pago") },
             text = {
-                Text("¿Está seguro que desea eliminar el carrito del cliente '${carrito.clienteId}'?")
+                Text("¿Está seguro que desea eliminar el pago #${pago.pagoId} del cliente '${pago.clienteId}'? Esta acción también eliminará todos sus detalles.")
             },
             confirmButton = {
                 Button(
                     onClick = {
-                        viewModel.deleteCarrito(carrito.carritoId)
+                        viewModel.deletePago(pago.pagoId)
                         showDeleteDialog = null
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -205,8 +208,9 @@ fun CarritoListScreen(
 }
 
 @Composable
-fun CarritoItem(
-    carrito: CarritoDeComprasDto,
+fun PagoConDetallesItem(
+    pago: PagosDto,
+    detalles: List<DetallesPagosDto>,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -222,6 +226,7 @@ fun CarritoItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
+            // Encabezado del pago
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -232,19 +237,19 @@ fun CarritoItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ShoppingCart,
+                        imageVector = Icons.Default.Send,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(40.dp)
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Carrito #${carrito.carritoId}",
+                            text = "Pago #${pago.pagoId}",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Cliente: ${carrito.clienteId}",
+                            text = "Cliente: ${pago.clienteId}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -271,7 +276,7 @@ fun CarritoItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Información adicional del carrito
+            // Información del pago
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -283,38 +288,49 @@ fun CarritoItem(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "$${carrito.montoTotal}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Column {
-                    Text(
-                        text = "Productos:",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = carrito.productos.size.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Column {
-                    Text(
-                        text = "Estado:",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = if (carrito.compra) "Comprado" else "Pendiente",
+                        text = "$${pago.montoPagado}",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
-                        color = if (carrito.compra) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.primary
                     )
+                }
+
+                Column {
+                    Text(
+                        text = "Fecha:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = pago.fechaPago,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
+                Column {
+                    Text(
+                        text = "Detalles:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "${detalles.size} detalles",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
+            // Lista de detalles del pago
+            if (detalles.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = "Detalles del Pago:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                detalles.forEach { detalle ->
+                    DetallePagoItem(detalle = detalle)
                 }
             }
         }
@@ -322,7 +338,46 @@ fun CarritoItem(
 }
 
 @Composable
-fun SuccessMessageCarrito(message: String) {
+fun DetallePagoItem(detalle: DetallesPagosDto) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Pedido #${detalle.pedidoId}",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "Método Pago ID: ${detalle.metodoPagoId}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Text(
+                text = "$${detalle.montoPagado}",
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun SuccessMessagePago(message: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -350,7 +405,7 @@ fun SuccessMessageCarrito(message: String) {
 }
 
 @Composable
-fun ErrorMessageCarrito(message: String) {
+fun ErrorMessagePago(message: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -379,15 +434,31 @@ fun ErrorMessageCarrito(message: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun CarritoItemPreview() {
+fun PagoConDetallesItemPreview() {
     MaterialTheme {
-        CarritoItem(
-            carrito = CarritoDeComprasDto(
-                carritoId = 1,
+        PagoConDetallesItem(
+            pago = PagosDto(
+                pagoId = 1,
                 clienteId = "CLI-001",
-                productos = listOf(),
-                montoTotal = 150.75f,
-                compra = false
+                montoPagado = 150.75f,
+                fechaPago = "2024-01-15",
+                detallesPagos = emptyList()
+            ),
+            detalles = listOf(
+                DetallesPagosDto(
+                    detallePagoId = 1,
+                    pedidoId = 101,
+                    pagoId = 1,
+                    metodoPagoId = 1,
+                    montoPagado = 75.50f
+                ),
+                DetallesPagosDto(
+                    detallePagoId = 2,
+                    pedidoId = 102,
+                    pagoId = 1,
+                    metodoPagoId = 2,
+                    montoPagado = 75.25f
+                )
             ),
             onEdit = {},
             onDelete = {}
