@@ -1,4 +1,8 @@
 package ucne.edu.carniceriarosario
 
-class Carniceriarosario {
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class Carniceriarosario: Application() {
 }
