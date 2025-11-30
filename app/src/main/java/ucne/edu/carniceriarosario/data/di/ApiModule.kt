@@ -1,11 +1,11 @@
 package ucne.edu.carniceriarosario.data.di
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -85,48 +85,44 @@ object ApiModule {
     }
 
     // -------------------- Usuario API --------------------
-    @Provides
-    @Singleton
-    fun provideUsuarioApi(
-        moshi: Moshi,
-        client: OkHttpClient
-    ): UsuarioApi =
+    @Provides @Singleton
+    fun provideUsuarioApi(moshi: Moshi, client: OkHttpClient): UsuarioApi =
         createApi(BASE_URL, moshi, client)
 
     // -------------------- Demás APIs --------------------
+    @Provides @Singleton fun provideCarritoApi(moshi: Moshi, client: OkHttpClient): CarritoApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun provideCategoriaCarnesApi(moshi: Moshi, client: OkHttpClient): CategoriaCarnesApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun provideClienteApi(moshi: Moshi, client: OkHttpClient): ClienteApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun provideDetalleProductosApi(moshi: Moshi, client: OkHttpClient): DetalleProductosApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun provideDetallesPagosApi(moshi: Moshi, client: OkHttpClient): DetallesPagosApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun provideEstadosApi(moshi: Moshi, client: OkHttpClient): EstadosApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun provideMetodosPagosApi(moshi: Moshi, client: OkHttpClient): MetodosPagosApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun providePagosApi(moshi: Moshi, client: OkHttpClient): PagosApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton fun providePedidosApi(moshi: Moshi, client: OkHttpClient): PedidosApi =
+        createApi(BASE_URL, moshi, client)
+
+    // -------------------- LOS QUE TE FALTABAN --------------------
     @Provides @Singleton
-    fun provideCarritoApi(moshi: Moshi, client: OkHttpClient): CarritoApi =
+    fun provideProductosApi(moshi: Moshi, client: OkHttpClient): ProductosApi =
         createApi(BASE_URL, moshi, client)
 
     @Provides @Singleton
-    fun provideCategoriaCarnesApi(moshi: Moshi, client: OkHttpClient): CategoriaCarnesApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun provideClienteApi(moshi: Moshi, client: OkHttpClient): ClienteApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun provideDetalleProductosApi(moshi: Moshi, client: OkHttpClient): DetalleProductosApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun provideDetallesPagosApi(moshi: Moshi, client: OkHttpClient): DetallesPagosApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun provideEstadosApi(moshi: Moshi, client: OkHttpClient): EstadosApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun provideMetodosPagosApi(moshi: Moshi, client: OkHttpClient): MetodosPagosApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun providePagosApi(moshi: Moshi, client: OkHttpClient): PagosApi =
-        createApi(BASE_URL, moshi, client)
-
-    @Provides @Singleton
-    fun providePedidosApi(moshi: Moshi, client: OkHttpClient): PedidosApi =
+    fun provideEstadisticasApi(moshi: Moshi, client: OkHttpClient): EstadisticasApi =
         createApi(BASE_URL, moshi, client)
 }
