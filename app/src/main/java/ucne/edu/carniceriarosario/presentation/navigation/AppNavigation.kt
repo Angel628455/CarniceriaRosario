@@ -5,6 +5,28 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+
+import ucne.edu.carniceriarosario.presentation.carrito.CarritoDeComprasViewModel
+import ucne.edu.carniceriarosario.presentation.carrito.CarritoListScreen
+import ucne.edu.carniceriarosario.presentation.carrito.CreateCarritoScreen
+
+import ucne.edu.carniceriarosario.presentation.categoria.CategoriaCarnesViewModel
+import ucne.edu.carniceriarosario.presentation.categoria.CategoriaCarnesListScreen
+import ucne.edu.carniceriarosario.presentation.categoria.CreateCategoriaScreen
+
+import ucne.edu.carniceriarosario.presentation.cliente.ClienteViewModel
+import ucne.edu.carniceriarosario.presentation.cliente.ClienteListScreen
+import ucne.edu.carniceriarosario.presentation.cliente.CreateClienteScreen
+
+import ucne.edu.carniceriarosario.presentation.estado.EstadosViewModel
+import ucne.edu.carniceriarosario.presentation.estado.EstadosListScreen
+import ucne.edu.carniceriarosario.presentation.estado.CreateEstadoScreen
+import ucne.edu.carniceriarosario.presentation.metododepago.MetodosPagosListScreen
+
+import ucne.edu.carniceriarosario.presentation.producto.ProductoViewModel
+import ucne.edu.carniceriarosario.presentation.producto.ProductoListScreen
+import ucne.edu.carniceriarosario.presentation.producto.CreateProductoScreen
+
 import ucne.edu.carniceriarosario.presentation.usuario.CrearUsuarioScreen
 import ucne.edu.carniceriarosario.presentation.usuario.EditarUsuarioScreen
 import ucne.edu.carniceriarosario.presentation.usuario.LoginScreen
@@ -14,6 +36,14 @@ import ucne.edu.carniceriarosario.presentation.usuario.RegisterScreen
 import ucne.edu.carniceriarosario.presentation.usuario.StartScreen
 import ucne.edu.carniceriarosario.presentation.usuario.UsuarioViewModel
 import ucne.edu.carniceriarosario.presentation.usuario.UsuariosScreen
+import ucne.edu.carniceriarosario.presentation.pedido.PedidosListScreen
+import ucne.edu.carniceriarosario.presentation.pedido.PedidosViewModel
+import ucne.edu.carniceriarosario.presentation.pedido.CreatePedidoScreen
+import ucne.edu.carniceriarosario.presentation.metododepago.MetodosPagosViewModel
+import ucne.edu.carniceriarosario.presentation.metododepago.CreateMetodoPagoScreen
+import ucne.edu.carniceriarosario.presentation.pago.CreatePagoScreen
+import ucne.edu.carniceriarosario.presentation.pago.PagosListScreen
+import ucne.edu.carniceriarosario.presentation.pago.PagosViewModel
 
 
 @Composable
