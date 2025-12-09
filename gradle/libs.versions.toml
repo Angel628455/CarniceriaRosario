@@ -19,6 +19,7 @@ coreI18n = "1.0.0"
 animationCoreLint = "1.9.3"
 adapters = "3.2.0-alpha11"
 visionInternalVkp = "18.2.3"
+uiGraphics = "1.10.0"
 
 
 [libraries]
@@ -48,6 +49,7 @@ androidx-core-i18n = { group = "androidx.core", name = "core-i18n", version.ref 
 androidx-compose-animation-core-lint = { group = "androidx.compose.animation", name = "animation-core-lint", version.ref = "animationCoreLint" }
 androidx-adapters = { group = "androidx.databinding", name = "adapters", version.ref = "adapters" }
 vision-internal-vkp = { group = "com.google.mlkit", name = "vision-internal-vkp", version.ref = "visionInternalVkp" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
