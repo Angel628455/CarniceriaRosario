@@ -16,4 +16,5 @@ class DettalleDeCarritoRepository @Inject constructor(
             emit(Resource.Error(e.message ?: "Error al obtener detalles de productos"))
         }
     }
+
 }
