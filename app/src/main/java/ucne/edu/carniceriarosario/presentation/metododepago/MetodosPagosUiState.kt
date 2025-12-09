@@ -20,4 +20,5 @@ data class MetodosPagosUiState(
     val metodoPagoSeleccionado: MetodosPagosDto? = null,
     val searchQuery: String = "",
     val metodosPagosFiltrados: List<MetodosPagosDto> = emptyList()
+
 )
