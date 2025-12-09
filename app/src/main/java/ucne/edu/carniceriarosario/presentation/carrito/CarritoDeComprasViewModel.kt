@@ -13,12 +13,13 @@ import ucne.edu.carniceriarosario.data.remote.Resource
 import ucne.edu.carniceriarosario.data.remote.dto.CarritoDeComprasDto
 import ucne.edu.carniceriarosario.data.remote.dto.DetalleProductosDto
 import ucne.edu.carniceriarosario.data.repository.CarritoRepository
-
+import ucne.edu.carniceriarosario.data.repository.DettalleDeCarritoRepository
 
 
 @HiltViewModel
 class CarritoDeComprasViewModel @Inject constructor(
-    private val repository: CarritoRepository
+    private val repository: CarritoRepository,
+    private val detalleProductosRepository: DettalleDeCarritoRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CarritoDeComprasUiState())
@@ -26,6 +27,39 @@ class CarritoDeComprasViewModel @Inject constructor(
 
     init {
         loadCarritos()
+        loadDetalleDeCarritos()
+    }
+
+    fun loadDetalleDeCarritos() {
+        viewModelScope.launch {
+            detalleProductosRepository.getDetallesDeCarrito().collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                dettalleDeCarrito = resource.data,
+                                isLoadingCarritos = false,
+                                errorCarritos = null
+                            )
+                        }
+                    }
+                    is Resource.Error -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoadingCarritos = false,
+                                errorCarritos = resource.message,
+                                dettalleDeCarrito = emptyList()
+                            )
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _uiState.update {
+                            it.copy(isLoadingCarritos = true, errorCarritos = null)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun loadCarritos() {
@@ -180,7 +214,7 @@ class CarritoDeComprasViewModel @Inject constructor(
         }
     }
 
-    // Métodos para manejar productos en el carrito
+
     fun agregarProducto(producto: DetalleProductosDto) {
         val productosActuales = _uiState.value.productos.toMutableList()
         productosActuales.add(producto)
