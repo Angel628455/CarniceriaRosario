@@ -21,4 +21,5 @@ data class UsuarioUiState(
     val usuarioSeleccionado: UsuarioDto? = null,
     val searchQuery: String = "",
     val usuariosFiltrados: List<UsuarioDto> = emptyList()
+
 )
