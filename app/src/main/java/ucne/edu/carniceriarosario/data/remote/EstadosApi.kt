@@ -19,4 +19,5 @@ interface EstadosApi {
 
     @DELETE("api/Estados/{id}")
     suspend fun deleteEstado(@Path("id") id: Int)
+
 }
