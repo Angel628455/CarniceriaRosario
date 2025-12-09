@@ -55,7 +55,7 @@ fun AppNavigation() {
         startDestination = Screen.StartScreen
     ) {
 
-        // Pantalla de Inicio (Splash)
+
         composable<Screen.StartScreen> {
             StartScreen(
                 onSplashComplete = {
@@ -66,7 +66,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Login
+
         composable<Screen.LoginScreen> {
             val usuarioViewModel: UsuarioViewModel = hiltViewModel()
             LoginScreen(
@@ -83,7 +83,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Registro
+
         composable<Screen.RegisterScreen> {
             val usuarioViewModel: UsuarioViewModel = hiltViewModel()
             RegisterScreen(
@@ -102,7 +102,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Menú Principal
+
         composable<Screen.Menu> { backStackEntry ->
             val usuarioId = backStackEntry.arguments?.getString("usuarioId")?.toIntOrNull()
             MenuScreen(
@@ -131,7 +131,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Perfil
+
         composable<Screen.Perfil> { backStackEntry ->
             val usuarioId = backStackEntry.arguments?.getString("usuarioId")?.toIntOrNull() ?: 0
             val usuarioViewModel: UsuarioViewModel = hiltViewModel()
@@ -142,7 +142,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla de Lista de Usuarios
+
         composable<Screen.UsuariosScreen> {
             val usuarioViewModel: UsuarioViewModel = hiltViewModel()
             UsuariosScreen(
@@ -157,7 +157,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla para Crear Usuario
+
         composable<Screen.CrearUsuario> {
             val usuarioViewModel: UsuarioViewModel = hiltViewModel()
             CrearUsuarioScreen(
@@ -171,7 +171,7 @@ fun AppNavigation() {
             )
         }
 
-        // Pantalla para Editar Usuario
+
         composable<Screen.EditarUsuario> { backStackEntry ->
             val usuarioId = backStackEntry.arguments?.getString("usuarioId")?.toIntOrNull() ?: 0
             val usuarioViewModel: UsuarioViewModel = hiltViewModel()
@@ -192,7 +192,7 @@ fun AppNavigation() {
             )
         }
 
-        // CARROS DE COMPRAS
+
         composable<Screen.CarritoListScreen> {
             val viewModel: CarritoDeComprasViewModel = hiltViewModel()
             CarritoListScreen(
@@ -216,7 +216,7 @@ fun AppNavigation() {
             )
         }
 
-        // CATEGORÍAS
+
         composable<Screen.CategoriaCarnesListScreen> {
             val viewModel: CategoriaCarnesViewModel = hiltViewModel()
             CategoriaCarnesListScreen(
@@ -240,7 +240,7 @@ fun AppNavigation() {
             )
         }
 
-        // CLIENTES
+
         composable<Screen.ClienteListScreen> {
             val viewModel: ClienteViewModel = hiltViewModel()
             ClienteListScreen(
@@ -264,7 +264,7 @@ fun AppNavigation() {
             )
         }
 
-        // ESTADOS
+
         composable<Screen.EstadosListScreen> {
             val viewModel: EstadosViewModel = hiltViewModel()
             EstadosListScreen(
@@ -288,7 +288,7 @@ fun AppNavigation() {
             )
         }
 
-        // MÉTODOS DE PAGO
+
         composable<Screen.MetodosPagosListScreen> {
             val viewModel: MetodosPagosViewModel = hiltViewModel()
             MetodosPagosListScreen(
@@ -312,7 +312,7 @@ fun AppNavigation() {
             )
         }
 
-        // PAGOS
+
         composable<Screen.PagosListScreen> {
             val viewModel: PagosViewModel = hiltViewModel()
             PagosListScreen(
@@ -336,7 +336,7 @@ fun AppNavigation() {
             )
         }
 
-        // PEDIDOS
+
         composable<Screen.PedidosListScreen> {
             val viewModel: PedidosViewModel = hiltViewModel()
             PedidosListScreen(
@@ -360,7 +360,7 @@ fun AppNavigation() {
             )
         }
 
-        // PRODUCTOS
+
         composable<Screen.ProductoListScreen> {
             val viewModel: ProductoViewModel = hiltViewModel()
             ProductoListScreen(
