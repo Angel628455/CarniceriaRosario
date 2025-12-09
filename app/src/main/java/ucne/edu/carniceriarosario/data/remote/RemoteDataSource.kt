@@ -110,4 +110,5 @@ class RemoteDataSource @Inject constructor(
     suspend fun createProducto(data: ProductosDto) = productosApi.createProducto(data)
     suspend fun updateProducto(id: Int, data: ProductosDto) = productosApi.updateProducto(id, data)
     suspend fun deleteProducto(id: Int) = productosApi.deleteProducto(id)
+
 }
