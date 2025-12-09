@@ -19,4 +19,5 @@ class EstadisticasRepository @Inject constructor(
             emit(Resource.Error(e.message ?: "Error al obtener estadísticas"))
         }
     }
+
 }
