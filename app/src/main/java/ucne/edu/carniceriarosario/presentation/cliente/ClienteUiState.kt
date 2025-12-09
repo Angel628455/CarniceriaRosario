@@ -22,4 +22,5 @@ data class ClienteUiState(
     val clienteSeleccionado: ClienteDto? = null,
     val searchQuery: String = "",
     val clientesFiltrados: List<ClienteDto> = emptyList()
+
 )
