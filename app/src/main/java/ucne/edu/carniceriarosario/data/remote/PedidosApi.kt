@@ -19,4 +19,5 @@ interface PedidosApi {
 
     @DELETE("api/Pedidos/{id}")
     suspend fun deletePedido(@Path("id") id: Int)
+
 }
