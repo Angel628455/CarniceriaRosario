@@ -9,7 +9,6 @@ data class ProductoUiState(
     val isLoadingProductos: Boolean = false,
     val errorProductos: String? = null,
 
-    // Campos del formulario
     val productoId: Int = 0,
     val nombre: String = "",
     val imagenProducto: String = "",
@@ -20,28 +19,27 @@ data class ProductoUiState(
     val stock: String = "",
     val categoriaCarneId: String = "",
 
-    // Detalles del producto
+
     val detalles: List<DetalleProductosDto> = emptyList(),
     val detalleNombre: String = "",
     val detallePrecio: String = "",
     val detalleCantidad: String = "",
     val detalleImagen: String = "",
 
-    // Estados de operaciones
+
     val isCreating: Boolean = false,
     val isUpdating: Boolean = false,
     val isDeleting: Boolean = false,
     val successMessage: String? = null,
     val errorMessage: String? = null,
 
-    // Producto seleccionado
     val productoSeleccionado: ProductosDto? = null,
 
-    // Búsqueda y filtrado
+
     val searchQuery: String = "",
     val productosFiltrados: List<ProductosDto> = emptyList(),
 
-    // Categorías disponibles
+
     val categorias: List<CategoriaCarnesDto> = emptyList(),
     val isLoadingCategorias: Boolean = false
 )
