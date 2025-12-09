@@ -19,4 +19,6 @@ interface CategoriaCarnesApi {
 
     @DELETE("api/CategoriasCarnes/{id}")
     suspend fun deleteCategoria(@Path("id") id: Int)
+
+
 }
