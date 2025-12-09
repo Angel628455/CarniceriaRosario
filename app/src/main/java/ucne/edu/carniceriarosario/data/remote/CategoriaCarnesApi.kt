@@ -5,7 +5,7 @@ import ucne.edu.carniceriarosario.data.remote.dto.CategoriaCarnesDto
 
 interface CategoriaCarnesApi {
 
-    @GET("api/CategoriasCarnes")
+    @GET("api/CategoriaCarnes")
     suspend fun getCategorias(): List<CategoriaCarnesDto>
 
     @GET("api/CategoriasCarnes/{id}")
