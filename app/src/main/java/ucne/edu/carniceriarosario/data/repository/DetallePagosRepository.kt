@@ -18,6 +18,7 @@ class DetallePagosRepository @Inject constructor(
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "Error al obtener detalles de pagos"))
         }
+
     }
 
     suspend fun getDetallePago(id: Int) = try {
