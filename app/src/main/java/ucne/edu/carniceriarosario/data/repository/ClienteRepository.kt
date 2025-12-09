@@ -43,4 +43,5 @@ class ClienteRepository @Inject constructor(
     } catch (e: Exception) {
         Resource.Error(e.message ?: "Error al eliminar cliente")
     }
+
 }
