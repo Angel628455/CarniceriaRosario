@@ -76,11 +76,10 @@ fun CreateProductoScreen(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Mensajes
+
                 uiState.errorMessage?.let { ErrorMessage(it) }
                 uiState.successMessage?.let { SuccessMessage(it) }
 
-                // Información básica
                 SectionHeader("Información Básica")
 
                 OutlinedTextField(
@@ -133,7 +132,7 @@ fun CreateProductoScreen(
 
                 Divider()
 
-                // Precios
+
                 SectionHeader("Precios y Costos")
 
                 Row(
@@ -169,7 +168,7 @@ fun CreateProductoScreen(
 
                 Divider()
 
-                // Inventario y categoría
+
                 SectionHeader("Inventario y Categoría")
 
                 Row(
@@ -189,7 +188,7 @@ fun CreateProductoScreen(
                         isError = uiState.errorMessage?.contains("stock", ignoreCase = true) == true
                     )
 
-                    // Dropdown de categorías
+
                     var expandedCategoria by remember { mutableStateOf(false) }
 
                     ExposedDropdownMenuBox(
@@ -231,7 +230,7 @@ fun CreateProductoScreen(
 
                 Divider()
 
-                // Sección de detalles
+
                 SectionHeader("Detalles del Producto *")
 
                 DetalleForm(
@@ -246,7 +245,7 @@ fun CreateProductoScreen(
                     onAddDetalle = { viewModel.addDetalle() }
                 )
 
-                // Lista de detalles agregados
+
                 if (uiState.detalles.isNotEmpty()) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -285,7 +284,7 @@ fun CreateProductoScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Botones de acción
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
