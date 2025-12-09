@@ -7,4 +7,5 @@ interface EstadisticasApi {
 
     @GET("estadisticas")
     suspend fun getEstadisticas(): EstadisticasDto
+
 }
