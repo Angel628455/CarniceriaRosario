@@ -152,7 +152,7 @@ class ProductoViewModel @Inject constructor(
 
         val nuevoDetalle = DetalleProductosDto(
             detalleId = 0,
-            productoId = 0, // Se asignará después de crear el producto
+            productoId = 0,
             productos = currentState.detalleNombre,
             carritoId = 0,
             precio = precio,
@@ -172,7 +172,7 @@ class ProductoViewModel @Inject constructor(
             )
         }
 
-        // Limpiar mensaje de éxito después de un tiempo
+
         viewModelScope.launch {
             kotlinx.coroutines.delay(2000)
             _uiState.update { it.copy(successMessage = null) }
@@ -190,7 +190,7 @@ class ProductoViewModel @Inject constructor(
     fun createProducto() {
         val currentState = _uiState.value
 
-        // Validaciones
+
         if (currentState.nombre.isBlank()) {
             _uiState.update { it.copy(errorMessage = "El nombre es requerido") }
             return
@@ -418,7 +418,7 @@ class ProductoViewModel @Inject constructor(
         }
     }
 
-    // Setters
+
     fun setNombre(nombre: String) {
         _uiState.update { it.copy(nombre = nombre, errorMessage = null) }
     }
@@ -451,7 +451,7 @@ class ProductoViewModel @Inject constructor(
         _uiState.update { it.copy(categoriaCarneId = categoriaCarneId, errorMessage = null) }
     }
 
-    // Setters para detalles
+
     fun setDetalleNombre(nombre: String) {
         _uiState.update { it.copy(detalleNombre = nombre, errorMessage = null) }
     }
