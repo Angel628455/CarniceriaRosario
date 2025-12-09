@@ -25,4 +25,5 @@ data class PedidosUiState(
     val pedidoSeleccionado: PedidosDto? = null,
     val searchQuery: String = "",
     val pedidosFiltrados: List<PedidosDto> = emptyList()
+
 )
