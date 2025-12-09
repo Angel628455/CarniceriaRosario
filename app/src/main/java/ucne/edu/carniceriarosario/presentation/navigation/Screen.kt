@@ -86,4 +86,5 @@ sealed class Screen {
 
     @Serializable
     data class CreateProductoScreen(val productoId: Int? = null) : Screen()
+
 }
