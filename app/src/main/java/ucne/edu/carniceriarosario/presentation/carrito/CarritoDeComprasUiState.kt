@@ -25,4 +25,5 @@ data class CarritoDeComprasUiState(
     val searchQuery: String = "",
     val carritosFiltrados: List<CarritoDeComprasDto> = emptyList(),
     val dettalleDeCarrito: List<DetalleDeCarritoDto> = emptyList()
+
 )
