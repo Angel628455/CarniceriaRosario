@@ -1,22 +1,19 @@
 package ucne.edu.carniceriarosario.data.repository
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ucne.edu.carniceriarosario.data.remote.RemoteDataSource
 import ucne.edu.carniceriarosario.data.remote.Resource
-import ucne.edu.carniceriarosario.data.remote.dto.EstadisticasDto
 import javax.inject.Inject
 
-class EstadisticasRepository @Inject constructor(
+class DettalleDeCarritoRepository @Inject constructor(
     private val remote: RemoteDataSource
-) {
-
-    fun getEstadisticas(): Flow<Resource<EstadisticasDto>> = flow {
+){
+    fun getDetallesDeCarrito() = flow {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(remote.getEstadisticas()))
+            emit(Resource.Success(remote.getDetallesDeCarrito()))
         } catch (e: Exception) {
-            emit(Resource.Error(e.message ?: "Error al obtener estadísticas"))
+            emit(Resource.Error(e.message ?: "Error al obtener detalles de productos"))
         }
     }
 

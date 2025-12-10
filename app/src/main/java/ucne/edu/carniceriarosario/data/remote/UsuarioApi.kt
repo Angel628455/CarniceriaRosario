@@ -24,4 +24,5 @@ interface UsuarioApi {
 
     @DELETE("api/Usuarios/{id}")
     suspend fun deleteUsuario(@Path("id") id: Int)
+
 }

@@ -19,4 +19,5 @@ interface PagosApi {
 
     @DELETE("api/Pagos/{id}")
     suspend fun deletePago(@Path("id") id: Int)
+
 }

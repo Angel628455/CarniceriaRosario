@@ -19,4 +19,5 @@ interface DetalleProductosApi {
 
     @DELETE("api/DetalleProductos/{id}")
     suspend fun deleteDetalle(@Path("id") id: Int)
+
 }

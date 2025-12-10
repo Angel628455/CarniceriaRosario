@@ -25,7 +25,7 @@ fun CreateCarritoScreen(
     val uiState by viewModel.uiState.collectAsState()
     val isEditMode = carritoId != null && carritoId > 0
 
-    // Cargar carrito para edición
+
     LaunchedEffect(carritoId) {
         if (isEditMode) {
             val carrito = uiState.carritos.find { it.carritoId == carritoId }
@@ -68,11 +68,11 @@ fun CreateCarritoScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Mensajes
+
             uiState.errorMessage?.let { ErrorMessageCarrito(it) }
             uiState.successMessage?.let { SuccessMessageCarrito(it) }
 
-            // Campo Cliente ID
+
             OutlinedTextField(
                 value = uiState.clienteId,
                 onValueChange = { viewModel.setClienteId(it) },
@@ -85,7 +85,7 @@ fun CreateCarritoScreen(
                 isError = uiState.errorMessage?.contains("cliente", ignoreCase = true) == true
             )
 
-            // Switch para compra
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -101,7 +101,7 @@ fun CreateCarritoScreen(
                 )
             }
 
-            // Información de productos
+
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -157,7 +157,7 @@ fun CreateCarritoScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Botones de acción
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)

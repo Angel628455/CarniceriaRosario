@@ -20,4 +20,5 @@ interface MetodosPagosApi {
 
     @DELETE("api/MetodosPagos/{id}")
     suspend fun deleteMetodo(@Path("id") id: Int)
+
 }

@@ -17,6 +17,7 @@ class PagosRepository @Inject constructor(
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "Error al obtener pagos"))
         }
+
     }
 
     suspend fun getPago(id: Int) = try {

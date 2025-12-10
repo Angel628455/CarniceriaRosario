@@ -19,4 +19,5 @@ interface ClienteApi {
 
     @DELETE("api/Clientes/{id}")
     suspend fun deleteCliente(@Path("id") id: Int)
+
 }

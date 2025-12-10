@@ -51,25 +51,25 @@ fun CarritoListScreen(
                 )
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNavigateToCreate,
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar carrito",
-                    tint = Color.White
-                )
-            }
-        }
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = onNavigateToCreate,
+//                containerColor = MaterialTheme.colorScheme.primary
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.Add,
+//                    contentDescription = "Agregar carrito",
+//                    tint = Color.White
+//                )
+//            }
+//        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Barra de búsqueda
+
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = { viewModel.setSearchQuery(it) },
@@ -91,11 +91,11 @@ fun CarritoListScreen(
                 shape = RoundedCornerShape(12.dp)
             )
 
-            // Mensajes
+
             uiState.successMessage?.let { SuccessMessageCarrito(it) }
             uiState.errorMessage?.let { ErrorMessageCarrito(it) }
 
-            // Lista de carritos
+
             when {
                 uiState.isLoadingCarritos -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -271,7 +271,7 @@ fun CarritoItem(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Información adicional del carrito
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

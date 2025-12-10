@@ -19,4 +19,5 @@ interface CarritoApi {
 
     @DELETE("api/Carrito/{id}")
     suspend fun deleteCarrito(@Path("id") id: Int)
+
 }

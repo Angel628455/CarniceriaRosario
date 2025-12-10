@@ -1,6 +1,7 @@
 package ucne.edu.carniceriarosario.presentation.carrito
 
 import ucne.edu.carniceriarosario.data.remote.dto.CarritoDeComprasDto
+import ucne.edu.carniceriarosario.data.remote.dto.DetalleDeCarritoDto
 import ucne.edu.carniceriarosario.data.remote.dto.DetalleProductosDto
 
 data class CarritoDeComprasUiState(
@@ -22,5 +23,7 @@ data class CarritoDeComprasUiState(
 
     val carritoSeleccionado: CarritoDeComprasDto? = null,
     val searchQuery: String = "",
-    val carritosFiltrados: List<CarritoDeComprasDto> = emptyList()
+    val carritosFiltrados: List<CarritoDeComprasDto> = emptyList(),
+    val dettalleDeCarrito: List<DetalleDeCarritoDto> = emptyList()
+
 )

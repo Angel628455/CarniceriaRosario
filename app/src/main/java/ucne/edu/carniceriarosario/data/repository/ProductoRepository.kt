@@ -14,7 +14,9 @@ class ProductoRepository @Inject constructor(
     fun getProductos(): Flow<Resource<List<ProductosDto>>> = flow {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(remoteDataSource.getProductos()))
+            val result = remoteDataSource.getProductos()
+            emit(Resource.Success(result))
+            //emit(Resource.Success(remoteDataSource.getProductos()))
         } catch (e: Exception) {
             emit(Resource.Error(e.message ?: "Error al obtener productos"))
         }
@@ -44,4 +46,5 @@ class ProductoRepository @Inject constructor(
     } catch (e: Exception) {
         Resource.Error(e.message ?: "Error al eliminar producto")
     }
+
 }

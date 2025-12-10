@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.compose.animation.core.lint)
     implementation(libs.androidx.adapters)
     implementation(libs.vision.internal.vkp)
+    implementation(libs.androidx.compose.ui.graphics)
 
     ksp("androidx.room:room-compiler:2.6.1")
 

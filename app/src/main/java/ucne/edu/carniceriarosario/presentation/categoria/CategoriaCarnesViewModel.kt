@@ -235,4 +235,5 @@ class CategoriaCarnesViewModel @Inject constructor(
             )
         }
     }
+
 }

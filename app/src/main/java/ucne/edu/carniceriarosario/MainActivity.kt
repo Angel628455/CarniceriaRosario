@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
 import ucne.edu.carniceriarosario.presentation.navigation.AppNavigation
+import ucne.edu.carniceriarosario.ui.theme.AppTheme
 import ucne.edu.carniceriarosario.ui.theme.CarniceriaRosarioTheme
 
 @AndroidEntryPoint
@@ -23,10 +24,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation()
+                    AppTheme {
+                        AppNavigation()
+                    }
                 }
             }
         }
+
     }
 }
 

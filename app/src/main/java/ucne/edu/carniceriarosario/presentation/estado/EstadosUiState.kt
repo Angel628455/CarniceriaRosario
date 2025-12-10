@@ -19,4 +19,5 @@ data class EstadosUiState(
     val estadoSeleccionado: EstadosDto? = null,
     val searchQuery: String = "",
     val estadosFiltrados: List<EstadosDto> = emptyList()
+
 )

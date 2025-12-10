@@ -14,5 +14,6 @@ data class ProductosDto(
     val stock: Int = 0,
     val fechaIngreso: String = "",
     val categoriaCarneId: Int = 0,
-    val categoriaCarnes: CategoriaCarnesDto? = null
+    val categoriaCarnes: CategoriaCarnesDto? = null,
+    val detalles: List<DetalleProductosDto>? = emptyList() // Nueva propiedad
 )
